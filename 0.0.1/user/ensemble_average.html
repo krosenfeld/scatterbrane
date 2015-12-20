@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Ensemble average &mdash; scatterbrane 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="scatterbrane 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Examples" href="examples.html"/>
+        <link rel="next" title="Time variability" href="time_variability.html"/>
+        <link rel="prev" title="Closure phase errors" href="cp_errors.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> scatterbrane
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="brane.html">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tracks.html">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracks.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cp_errors.html">Closure phase errors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Ensemble average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_variability.html">Time variability</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">scatterbrane</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="examples.html">Examples</a> &raquo;</li>
+      
+    <li>Ensemble average</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/ensemble_average.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-scatterbrane"></span><div class="section" id="ensemble-average">
+<span id="ensembleaverage"></span><h1>Ensemble average<a class="headerlink" href="#ensemble-average" title="Permalink to this headline">¶</a></h1>
+<p>This example demonstrates how the ensemble average image
+can be reconstructed by averaging many instances of the
+average image.  It also briefly explores the consequences
+of deblurring using the kernel of the ensemble average. The
+python script covers:</p>
+<ol class="arabic simple">
+<li>Generating many instances of a scattered image.</li>
+<li>Calculating visibility profiles.</li>
+<li>How to deblur visilities (see <a class="reference external" href="https://ui.adsabs.harvard.edu/#abs/2014ApJ...795..134F/abstract">Fish et al. 2014</a>).</li>
+</ol>
+<p>First we will load our modules and set some defaults</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">palettable.cubehelix</span> <span class="kn">import</span> <span class="n">jim_special_16</span>
+<span class="kn">from</span> <span class="nn">palettable.colorbrewer.qualitative</span> <span class="kn">import</span> <span class="n">Dark2_5</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">jim_special_16</span><span class="o">.</span><span class="n">mpl_colormap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;image.origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;lower&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;axes.color_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Dark2_5</span><span class="o">.</span><span class="n">mpl_colors</span>
+
+<span class="c"># don&#39;t forget ScatterBrane!</span>
+<span class="kn">from</span> <span class="nn">scatterbrane</span> <span class="kn">import</span> <span class="n">Brane</span><span class="p">,</span><span class="n">utilities</span>
+
+<span class="c"># set up logger</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For this example our source structure is a ring:
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>def source_model(nx,dx,radius,width):</dt>
+<dd>sigma = width / (2 * np.sqrt(np.log(4))) / dx
+x = np.dot(np.transpose([np.ones(nx)]),[np.arange(nx)-nx/2])
+r = np.sqrt(x**2 + x.T**2)
+m = np.exp(-0.5/sigma**2*(r-radius/dx)**2)
+return m/m.sum()</dd>
+</dl>
+<p>nx = 256
+dx = 0.75
+m = source_model(nx,dx,28.,10.)</p>
+</div></blockquote>
+<p>We will generate a large set of scattered images, summing them so that we can see the averaged image.
+In addition, we will record the visibility profile along the <cite>u</cite> and <cite>v</cite> axes.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># initialize the scattering class</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Brane</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">wavelength</span><span class="o">=</span><span class="mf">1.3e-3</span><span class="p">,</span><span class="n">nphi</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span><span class="n">screen_res</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">r_inner</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c"># points along the uv axes where to record the visibility</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">10e9</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c"># generate a bunch of scattering instances</span>
+<span class="n">u_vis</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">v_vis</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">num_sims</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">isrc</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_sims</span><span class="p">):</span>
+    <span class="c"># create a new instance of the random phases</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">generatePhases</span><span class="p">()</span>
+    <span class="c"># calculate the scattered image</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+    <span class="c"># keep track of the average</span>
+    <span class="n">avg</span> <span class="o">+=</span> <span class="n">b</span><span class="o">.</span><span class="n">iss</span>
+    <span class="c"># calculate the visibility function along the u and v axis.</span>
+    <span class="n">u_vis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utilities</span><span class="o">.</span><span class="n">FTElementFast</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">iss</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,[</span><span class="n">u_</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">u_</span> <span class="ow">in</span> <span class="n">u</span><span class="p">]))</span>
+    <span class="n">v_vis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utilities</span><span class="o">.</span><span class="n">FTElementFast</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">iss</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="n">u_</span><span class="p">])</span> <span class="k">for</span> <span class="n">u_</span> <span class="ow">in</span> <span class="n">u</span><span class="p">]))</span>
+
+<span class="c"># finish average calculation</span>
+<span class="n">avg</span> <span class="o">/=</span> <span class="n">num_sims</span>
+</pre></div>
+</div>
+<p>ScatterBrane comes with some helpful functions including one to generate the ensemble averaged image.
+We will also calculate the ensemble and source visibility profiles</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># the ensemble average image</span>
+<span class="n">ensemble</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">ensembleSmooth</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">isrc</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+
+<span class="c"># the source and ensemble visibility profiles</span>
+<span class="n">u_src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utilities</span><span class="o">.</span><span class="n">FTElementFast</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">isrc</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,[</span><span class="n">u_</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">u_</span> <span class="ow">in</span> <span class="n">u</span><span class="p">])</span>
+<span class="n">v_src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utilities</span><span class="o">.</span><span class="n">FTElementFast</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">isrc</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="n">u_</span><span class="p">])</span> <span class="k">for</span> <span class="n">u_</span> <span class="ow">in</span> <span class="n">u</span><span class="p">])</span>
+<span class="n">u_ens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utilities</span><span class="o">.</span><span class="n">FTElementFast</span><span class="p">(</span><span class="n">ensemble</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,[</span><span class="n">u_</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">u_</span> <span class="ow">in</span> <span class="n">u</span><span class="p">])</span>
+<span class="n">v_ens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utilities</span><span class="o">.</span><span class="n">FTElementFast</span><span class="p">(</span><span class="n">ensemble</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="n">u_</span><span class="p">])</span> <span class="k">for</span> <span class="n">u_</span> <span class="ow">in</span> <span class="n">u</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Now compare the images of <code class="docutils literal"><span class="pre">ensemble</span></code> (left) and <code class="docutils literal"><span class="pre">avg</span></code> (right):</p>
+<img alt="../_images/avg_image.png" src="../_images/avg_image.png" />
+<p>Next I will plot the amplitude of the source (dashed red) and ensemble average (dashed-dot black)
+visibility profiles against baseline.  The thin blue lines show 5 examples of scattered
+amplitudes and the gray shaded region shows the shape of the ensemble average scattering kernel
+(from <a class="reference external" href="https://ui.adsabs.harvard.edu/#abs/2006ApJ...648L.127B/abstract">Bower et al. (2006)</a>).</p>
+<img alt="../_images/vis_profiles.png" src="../_images/vis_profiles.png" />
+<p>To deblur the scattered images we can divide the visibilities by the kernel of the ensemble average.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># calculate the ensemble average convolution kernel</span>
+<span class="n">u_kernel</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">getUVKernel</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">u</span><span class="p">),</span><span class="n">b</span><span class="p">)</span>
+<span class="n">v_kernel</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">getUVKernel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">u</span><span class="p">),</span><span class="n">u</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+
+<span class="c"># divide the visibilities</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="o">/</span><span class="mf">1e9</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">u_vis</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="n">u_kernel</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]),</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;#377EB8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Plotting below, the legend is the same as before except now the thin blue lines have been
+<cite>deblurred</cite> and the black line shows the deblurred ensemble average image.</p>
+<img alt="../_images/vis_profiles_deblur.png" src="../_images/vis_profiles_deblur.png" />
+<p>So while this method works very well on the ensemble average image, it fails catastrophically where the
+scattering kernel approaches zero (i.e. long baselines).  This is because we are dividing by a small number
+and amplifying the error from the scattering.  Plotting the RMS error of the visibility amplitude between the
+averages of <cite>N</cite> deblurred scattered and ensemble average visibilities shows how this error reduces as <cite>N</cite> increases:</p>
+<img alt="../_images/vis_rms_deblur.png" src="../_images/vis_rms_deblur.png" />
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="time_variability.html" class="btn btn-neutral float-right" title="Time variability" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cp_errors.html" class="btn btn-neutral" title="Closure phase errors" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Time variability &mdash; scatterbrane 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="scatterbrane 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Examples" href="examples.html"/>
+        <link rel="prev" title="Ensemble average" href="ensemble_average.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> scatterbrane
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="brane.html">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tracks.html">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracks.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cp_errors.html">Closure phase errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble_average.html">Ensemble average</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Time variability</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">scatterbrane</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="examples.html">Examples</a> &raquo;</li>
+      
+    <li>Time variability</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/time_variability.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-scatterbrane"></span><div class="section" id="time-variability">
+<span id="timevariability"></span><h1>Time variability<a class="headerlink" href="#time-variability" title="Permalink to this headline">¶</a></h1>
+<p>This example demonstrates how to incorporate time
+variability into the scattering simulation.  The
+python script covers:</p>
+<ol class="arabic simple">
+<li>Scattering a timeseries of images (also called a movie).</li>
+<li>Incorporting the motion of the screen relative to the Earth.</li>
+<li>Calculating the total flux modulation introduced by the scattering.</li>
+<li>Using some optimized settings to speed up the calculation.</li>
+<li>Creating a neat movie of the results.</li>
+</ol>
+<p>Scattering may impact your time variability science.  You can use
+scatterbrane to incorporate changes in your source or
+your screen.  This example may take a while to run so
+consider reducing <code class="docutils literal"><span class="pre">num_samples</span></code> to something like 100 for
+testing.</p>
+<p>First let&#8217;s run through some initialization</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scatterbrane</span> <span class="kn">import</span> <span class="n">Brane</span><span class="p">,</span><span class="n">utilities</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">imread</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;image.origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;lower&#39;</span>
+
+<span class="c"># set up logger</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For our source structure we will use the amazing New Horizon&#8217;s
+lookback image of Pluto:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># import our source image and covert it to gray scale</span>
+<span class="n">src_file</span> <span class="o">=</span> <span class="s">&#39;source_images/nh_01_stern_05_pluto_hazenew2.square.jpg&#39;</span>
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">src_file</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">I</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2989</span><span class="p">,</span><span class="mf">0.5870</span><span class="p">,</span><span class="mf">0.1140</span><span class="p">])[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:]</span><span class="o">*</span><span class="n">rgb</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">I</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">I</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c"># make up some scale for our image.  Let&#39;s have it span 90 uas.</span>
+<span class="n">write_figs</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">wavelength</span><span class="o">=</span><span class="mf">1e-3</span>
+<span class="n">FOV</span> <span class="o">=</span> <span class="mf">90.</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">FOV</span><span class="o">/</span><span class="n">I</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For this example we will be moving the screen across our field of view,
+so we will have the screen be a rectangle with the long edge along the
+x-axis (the direction of motion).  Furthermore, we will set the major axis of
+the scattering to be along this axis (<cite>pa=None</cite>).  When <cite>pa</cite> is set to any
+scalar value the scatter method has to do several rotations which can take
+up some time.  We&#8217;re setting the scattering to be isotropic (<cite>anistropy=1</cite>) so
+we can skip these rotations and speed up the calculation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># initialize the scattering screen @ 0.87mm</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Brane</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">wavelength</span><span class="o">=</span><span class="mf">0.87e-3</span><span class="p">,</span><span class="n">nphi</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span><span class="mi">2</span><span class="o">**</span><span class="mi">14</span><span class="p">),</span><span class="n">anisotropy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">pa</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">r_inner</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">live_dangerously</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We have also increased the inner turbulence scale to make sure that the image
+is smooth enough to validate our treatment of the scattering.  By setting
+<code class="docutils literal"><span class="pre">live_dangerously</span></code> = <code class="docutils literal"><span class="pre">True</span></code> we are skipping over the sanity checks (which involve
+some FFTs) and now have the power to break things badly.  Here is the
+source structure and an example of the scattered image:</p>
+<img alt="../_images/iss1.png" src="../_images/iss1.png" />
+<p>Now we&#8217;ll calculate the time coverage of our screen:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># estimate the time resolution of our simulation assuming some screen velocity.</span>
+<span class="n">screen_velocity</span> <span class="o">=</span> <span class="mf">200.</span>  <span class="c">#km/s</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="n">screen_velocity</span><span class="o">/</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">screen_dx</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">ips</span><span class="p">)</span> <span class="c"># Hz</span>
+<span class="n">num_samples</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">nphi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">b</span><span class="o">.</span><span class="n">ips</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">nx</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Number of samples: {0:g}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_samples</span><span class="p">))</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Sampling interval: {0:g}s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">fs</span><span class="p">))</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Time coverage: {0:g} days&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_samples</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="p">(</span><span class="mf">3600.</span><span class="o">*</span><span class="mf">24.</span><span class="p">)))</span>
+
+<span class="c">#INFO:root:Number of samples: 2529</span>
+<span class="c">#INFO:root:Sampling interval: 234.349s</span>
+<span class="c">#INFO:root:Time coverage: 6.85959 days</span>
+</pre></div>
+</div>
+<p>Now we are prepared to generate the screen phases and time series.  For each frame (i.e. time sample)
+I will move the screen by a screen pixel offset of <cite>move_pix</cite>.  I find that it is a good idea to set this
+to match the size of the image pixel which is just a factor <cite>ips</cite>.  We will also update the source image
+at each sample to simulate a changing source structure (a slow total flux modulation).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># generate time series (this takes a while)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;generating time series...&#39;</span><span class="p">)</span>
+<span class="n">fluxes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
+    <span class="c"># update source image to include a sinusoidal flux modulation</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="n">I</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="mf">0.4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">i</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">num_samples</span><span class="p">))),</span> <span class="n">dx</span><span class="p">)</span> <span class="c"># comment out to speedup</span>
+    <span class="c"># generate scattered image</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">move_pix</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">ips</span><span class="p">)</span>
+    <span class="c"># save our results and the total source flux</span>
+    <span class="n">fluxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">iss</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">iss</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;took {0:g}s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We have saved the total flux which we can plot as a function of time:</p>
+<img alt="../_images/flux.png" src="../_images/flux.png" />
+<p>And from our time series we can create a movie</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="kn">as</span> <span class="nn">animation</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">updatefig</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">i</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">num_samples</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">smoothImage</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">im</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">utilities</span><span class="o">.</span><span class="n">smoothImage</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">animated</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;$\Delta</span><span class="se">\\</span><span class="s">alpha$ [$\mu$as]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;$\Delta\delta$ [$\mu$as]&#39;</span><span class="p">)</span>
+<span class="n">ani</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">updatefig</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+<span class="n">Writer</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">writers</span><span class="p">[</span><span class="s">&#39;ffmpeg&#39;</span><span class="p">]</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">Writer</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">artist</span><span class="o">=</span><span class="s">&#39;scatterbrane&#39;</span><span class="p">),</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">1800</span><span class="p">)</span>
+<span class="n">ani</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;mov.mp4&#39;</span><span class="p">,</span><span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and post it to youtube!</p>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/Ge5cf1yxxpI"
+frameborder="0" allowfullscreen></iframe></div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="ensemble_average.html" class="btn btn-neutral" title="Ensemble average" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

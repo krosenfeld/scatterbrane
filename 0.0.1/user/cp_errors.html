@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Closure phase errors &mdash; scatterbrane 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="scatterbrane 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Examples" href="examples.html"/>
+        <link rel="next" title="Example: ensemble average" href="ensemble_average.html"/>
+        <link rel="prev" title="Examples" href="examples.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> scatterbrane
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="brane.html">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tracks.html">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracks.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Closure phase errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble_average.html">Example: ensemble average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_variability.html">Example: time variability</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">scatterbrane</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="examples.html">Examples</a> &raquo;</li>
+      
+    <li>Closure phase errors</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/cp_errors.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-scatterbrane"></span><div class="section" id="closure-phase-errors">
+<span id="cperrors"></span><h1>Closure phase errors<a class="headerlink" href="#closure-phase-errors" title="Permalink to this headline">¶</a></h1>
+<p>This example demonstrates how to estimate the root mean squared error in closure
+phase induced by scattering.  The python script covers:</p>
+<ol class="arabic simple">
+<li>Scattering an image</li>
+<li>Generating multiple instances of the screen</li>
+<li>Generating uv samples for closure phase calculations</li>
+<li>Calculating closure phases for an image including Earth rotation.</li>
+<li>Calculating the rms closure phase error induced by scattering.</li>
+</ol>
+<p>Closure phases are useful quantities for studying asymmetry
+when your data has large station-specific phase noise.
+To compute a closure phase you sum the phases over three directed baselines
+that represent a closed geographic triangle.  While these quantities can
+be rather unintuitive, it is useful to know that for source with rotational
+symmetry the closure phase is zero.  So in the ensemble-average regime,
+scattering introduces no error in the closure phase.  However, for the
+distortions introduces in the average image will change the closure phase.
+The error is dependent upon both the source structure and the screen.</p>
+<p>First we will load modules and do some basic configuration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scatterbrane</span> <span class="kn">import</span> <span class="n">Brane</span><span class="p">,</span><span class="n">Target</span><span class="p">,</span><span class="n">utilities</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">imread</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;image.cmap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;gray_r&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;image.origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;lower&#39;</span>
+
+<span class="c"># set up logger</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now we will load our source image and arbitrarily choose its pixel size.  Note that I flip the y-axis (axis=0)
+of the image so that increasing index corresponds to our intuition of up.  Scatterbrane assumes that the background
+level corresponds to 0 so I also invert the color scale.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># import our source image and covert it to gray scale</span>
+<span class="n">src_file</span> <span class="o">=</span> <span class="s">&#39;source_images/640px-Bethmaennchen2.square.jpg&#39;</span>
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">src_file</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">I</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2989</span><span class="p">,</span><span class="mf">0.5870</span><span class="p">,</span><span class="mf">0.1140</span><span class="p">])[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:]</span><span class="o">*</span><span class="n">rgb</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">I</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">I</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c"># and smooth image</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">smoothImage</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">8.</span><span class="p">)</span>
+
+<span class="c"># make up some scale for our image. Let&#39;s have it span 120 uas.</span>
+<span class="n">wavelength</span><span class="o">=</span><span class="mf">1e-3</span>
+<span class="n">FOV</span> <span class="o">=</span> <span class="mf">120.</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">FOV</span><span class="o">/</span><span class="n">I</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Our source image and blurred by Gaussian with a full width at half maximum of 10 microarcseconds:</p>
+<img alt="../_images/src.png" src="../_images/src.png" />
+<p>We&#8217;ll initialize the scattering screen and the observing parameters for calculating closure phases:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># initialize the scattering screen @ 1mm</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Brane</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">wavelength</span><span class="o">=</span><span class="mf">1.e-3</span><span class="p">,</span><span class="n">nphi</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="c"># initialize Target object for calculating visibilities and uv samples</span>
+<span class="n">sgra</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="mf">1.e-3</span><span class="p">)</span>
+<span class="c"># calculate uv samples for our closure phase triangle and on the source image</span>
+<span class="n">site_triangle</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;SMA&quot;</span><span class="p">,</span><span class="s">&quot;ALMA&quot;</span><span class="p">,</span><span class="s">&quot;LMT&quot;</span><span class="p">]</span>
+<span class="p">(</span><span class="n">uv</span><span class="p">,</span><span class="n">hr</span><span class="p">)</span> <span class="o">=</span> <span class="n">sgra</span><span class="o">.</span><span class="n">generateTriangleTracks</span><span class="p">(</span><span class="n">sgra</span><span class="o">.</span><span class="n">sites</span><span class="p">(</span><span class="n">site_triangle</span><span class="p">),</span><span class="n">times</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">24.</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="mf">24.</span><span class="o">*</span><span class="mf">60.</span><span class="o">/</span><span class="mf">2.</span><span class="p">)),</span><span class="n">return_hour</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c"># closure phases for the source image</span>
+<span class="n">CP_src</span> <span class="o">=</span> <span class="n">sgra</span><span class="o">.</span><span class="n">calculateCP</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">isrc</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span><span class="n">uv</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>uv is a numpy array with the individual (u,v) pairs separated by 2 minutes. Our closure phase triangle has been set
+as the SMT, ALMA, and LMT observatories.</p>
+<img alt="../_images/uv_track.png" src="../_images/uv_track.png" />
+<p>Now we will calculat the closure phaes for a bunch of scattered images using a different phase screen each time.  I
+set the number to take about 10 minutes.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">one_sim</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; helper function to run one simulation &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">sgra</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">CP</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">generatePhases</span><span class="p">()</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+    <span class="n">CP</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sgra</span><span class="o">.</span><span class="n">calculateCP</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">iss</span><span class="p">,</span><span class="n">b</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span><span class="n">uv</span><span class="p">))</span>
+
+<span class="c"># initialize list</span>
+<span class="n">CP</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c"># estimate time for one simulation</span>
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">one_sim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c"># run enough to take about 10 minutes</span>
+<span class="n">num_sim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="mf">60.</span> <span class="o">/</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;running {0:g} simulations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_sim</span><span class="p">))</span>
+<span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_sim</span><span class="p">):</span>
+    <span class="n">one_sim</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">CP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">CP</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;took {0:g}s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">tic</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Here is the result for one simulation:</p>
+<img alt="../_images/iss.png" src="../_images/iss.png" />
+<p>Using our results we can calculate the rms error:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># calculate rms error of closure phase array (CP)</span>
+<span class="n">wrapdiff</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">angle1</span><span class="p">,</span><span class="n">angle2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span><span class="o">*</span><span class="n">angle1</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span><span class="o">*</span><span class="n">angle2</span><span class="p">))</span>
+<span class="n">rms_CP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">wrapdiff</span><span class="p">(</span><span class="n">CP</span><span class="p">,</span><span class="n">CP_src</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:]))</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>and plot it:</p>
+<img alt="../_images/cp.png" src="../_images/cp.png" />
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ensemble_average.html" class="btn btn-neutral float-right" title="Example: ensemble average" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="examples.html" class="btn btn-neutral" title="Examples" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>The Target &mdash; scatterbrane 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="scatterbrane 0.0.1 documentation" href="../index.html"/>
+        <link rel="next" title="Utilities" href="utilities.html"/>
+        <link rel="prev" title="The Brane" href="brane.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> scatterbrane
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="brane.html">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cp_errors.html">Closure phase errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble_average.html">Ensemble average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_variability.html">Time variability</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">scatterbrane</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>The Target</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/tracks.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-tracks"></span><div class="section" id="the-target">
+<span id="tracks"></span><h1>The Target<a class="headerlink" href="#the-target" title="Permalink to this headline">¶</a></h1>
+<p>Lightweight python module for generating visibilities and closure quantities without noise.
+You might also be interested in the <a class="reference external" href="http://vlbiimaging.csail.mit.edu/">VLBI Dataset Website</a>.</p>
+<div class="section" id="class-methods">
+<h2>Class Methods<a class="headerlink" href="#class-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scatterbrane.Target">
+<em class="property">class </em><code class="descclassname">scatterbrane.</code><code class="descname">Target</code><span class="sig-paren">(</span><em>wavelength=0.0013, position='sgra', obspos='eht', zenith_cuts=[75.0, 0.0]</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for constructing visibility samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wavelength</strong> &#8211; (optional) 
+Scalar wavelength in meters.</li>
+<li><strong>position</strong> &#8211; (optional) <code class="docutils literal"><span class="pre">(2,</span> <span class="pre">)</span></code> 
+A tuple with right ascension and declination of the source in (hours, degrees) or the preset string &#8220;sgra&#8221;.</li>
+<li><strong>obspos</strong> &#8211; (optional) 
+A dictionary of observatories and their geocentric positions.</li>
+<li><strong>elevation_cuts</strong> &#8211; (optional) <code class="docutils literal"><span class="pre">(2,</span> <span class="pre">)</span></code> 
+The upper and lower bound on the observing zenith angle.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The zenith angle cut corresponds to whether the site can observe the source.  As a result, for functions such as <code class="xref py py-func docutils literal"><span class="pre">generateTracks()</span></code>, the number of uv samples returned will be less than or equal to the number of samples set by the <code class="docutils literal"><span class="pre">times</span></code> argument.  To disable the zenith angle cut you can initialize <code class="xref py py-class docutils literal"><span class="pre">Target</span></code> with <code class="docutils literal"><span class="pre">zenith_cuts</span></code> = <code class="docutils literal"><span class="pre">[180.,0.]</span></code>.</p>
+</div>
+<dl class="method">
+<dt id="scatterbrane.Target.FTElementFast">
+<code class="descname">FTElementFast</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>baseline</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.FTElementFast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return complex visibility.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> &#8211; Image array.</li>
+<li><strong>dx</strong> &#8211; pixel size in microarcseconds.</li>
+<li><strong>baseline</strong> &#8211; (u,v) point in wavelengths.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">complex visibility</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.calculateBS">
+<code class="descname">calculateBS</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>uvTriangle</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.calculateBS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate bispectrum for numpy arrays of 3 baselines that should form a closed triangle:</p>
+<div class="math">
+\[B_{abc} = V_{ab}V_{bc}V_{ca}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code> 
+Image array.</li>
+<li><strong>dx</strong> &#8211; scalar 
+Pixel size of image in microarcseconds.</li>
+<li><strong>uvTriangle</strong> &#8211; <code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">3,</span> <span class="pre">2)</span></code> 
+uv samples for which to calculate the bispectra.  The baseline order along axis=1 should be (ab,bc,ca).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">)</span></code> 
+Complex bispectra.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.calculateCA">
+<code class="descname">calculateCA</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>uvQuadrangle</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.calculateCA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate closure amplitudes for numpy arrays of 4 baselines:</p>
+<div class="math">
+\[A_{abcd} = \frac{|V_{ab}||V_{cd}|}{|V_{ac}||V_{bd}|}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code> 
+Numpy image array.</li>
+<li><strong>dx</strong> &#8211; scalar 
+Pixel size of image in microarcseconds.</li>
+<li><strong>uvQuadrangle</strong> &#8211; <code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">4,</span> <span class="pre">2)</span></code> 
+The uv samples for which to calculate the closure amplitude. The baseline order along axis=1 should be (ab,cd,ac,bd).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">)</span></code> 
+Closure amplitudes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.calculateCP">
+<code class="descname">calculateCP</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>uvTriangle</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.calculateCP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate closure phases for numpy arrays of 3 baselines that should form a closed triangle:</p>
+<div class="math">
+\[\phi_{abc} = \mathrm{arg}(V_{ab}V_{bc}V_{ca})\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code> 
+Numpy image array.</li>
+<li><strong>dx</strong> &#8211; scalar 
+Pixel size of image in microarcseconds.</li>
+<li><strong>uvTriangle</strong> &#8211; <code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">3,</span> <span class="pre">2)</span></code> 
+The uv samples for which to calculate the closure phase.  The baseline order along axis=1 should be (ab,bc,ca).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">)</span></code> 
+Closure phases in radians.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.calculateVisibilities">
+<code class="descname">calculateVisibilities</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>uv</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.calculateVisibilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate complex visibilities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> &#8211; Image array.</li>
+<li><strong>dx</strong> &#8211; Pixel size in microarcseconds.</li>
+<li><strong>uv</strong> &#8211; <code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">2)</span></code> An array of <cite>uv</cite> samples with dimension.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">)</span></code> Scalar complex visibilities.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.generateQuadrilateralTracks">
+<code class="descname">generateQuadrilateralTracks</code><span class="sig-paren">(</span><em>sites</em>, <em>times=(0.0</em>, <em>24.0</em>, <em>144)</em>, <em>return_hour=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.generateQuadrilateralTracks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a quadruplet of uv points for a quadrilateral (a,b,c,d) ensuring that all sites can see the source.  See the docstring for <code class="xref py py-func docutils literal"><span class="pre">generateTracks()</span></code> for notes about the sampling rate.</p>
+<p><strong>Suggested usage:</strong> Feed the generated <cite>uv</cite> samples to <code class="xref py py-func docutils literal"><span class="pre">calculateCA()</span></code> which will return the closure amplitude quantity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sites</strong> &#8211; <code class="docutils literal"><span class="pre">(4,</span> <span class="pre">3)</span></code> 
+Array of geocentric positions for 4 sites (a,b,c,d).</li>
+<li><strong>times</strong> &#8211; (optional) <code class="docutils literal"><span class="pre">(start,</span> <span class="pre">stop,</span> <span class="pre">num_samples)</span></code> 
+Tuple setting the spacing of the uv-samples in time.  The <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">stop</span></code> times should be in hours and in the range [0,24].  <code class="docutils literal"><span class="pre">stop</span></code> is non-inclusive.</li>
+<li><strong>return_hour</strong> &#8211; (optional) 
+Return hour of uv samples as second item to unpack.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">4,</span> <span class="pre">2)</span></code> 
+Array where the order of the baselines along the first dimension (axis=1) is (ab, cd, ac, bd).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.generateTracks">
+<code class="descname">generateTracks</code><span class="sig-paren">(</span><em>sites</em>, <em>times=(0.0</em>, <em>24.0</em>, <em>144)</em>, <em>return_hour=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.generateTracks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates uv-samples where the sample rate is to be equally spaced in time. 
+For instance, if you want samples spaced by 5 minutes ranging from 1 UT to 4 UT 
+(non-inclusive) you would set <code class="docutils literal"><span class="pre">times</span></code> = <code class="docutils literal"><span class="pre">(1,</span> <span class="pre">4,</span> <span class="pre">int((4.-1.)*60./5.))</span></code>.  As 
+another example, you would generate 128 samples separated by 10 seconds if 
+<code class="docutils literal"><span class="pre">times</span></code> = <code class="docutils literal"><span class="pre">(0.,</span> <span class="pre">128*10./3600,</span> <span class="pre">128)</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sites</strong> &#8211; <code class="docutils literal"><span class="pre">(num_sites,</span> <span class="pre">3)</span></code> 
+Numpy array of sites&#8217; geocentric positions.</li>
+<li><strong>times</strong> &#8211; (optional) <code class="docutils literal"><span class="pre">(start,</span> <span class="pre">stop,</span> <span class="pre">num_samples)</span></code> 
+Tuple setting the spacing of the uv-samples in time.  The <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">stop</span></code> times should be in hours and in the range [0,24].  <code class="docutils literal"><span class="pre">stop</span></code> is non-inclusive.</li>
+<li><strong>return_hour</strong> &#8211; (optional) bool
+Return hour of uv samples as second item to unpack.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">2)</span></code> 
+Numpy array with uv samples where <code class="docutils literal"><span class="pre">num_measurements</span></code> <span class="math">\(\leq\)</span> <code class="docutils literal"><span class="pre">num_samples</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.generateTriangleTracks">
+<code class="descname">generateTriangleTracks</code><span class="sig-paren">(</span><em>sites</em>, <em>times=(0.0</em>, <em>24.0</em>, <em>144)</em>, <em>return_hour=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.generateTriangleTracks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a triplet of uv points for a closed triangle of sites (a,b,c) ensuring that all sites can see the source.  
+See the docstring for <code class="xref py py-func docutils literal"><span class="pre">generateTracks()</span></code> for notes about the sampling rate.</p>
+<p><strong>Suggested usage:</strong> Feed the generated UV samples to <code class="xref py py-func docutils literal"><span class="pre">calculateBS()</span></code> or <code class="xref py py-func docutils literal"><span class="pre">calculateCP()</span></code> to calculate closure phase or bispectrum quanities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sites</strong> &#8211; <code class="docutils literal"><span class="pre">(3,</span> <span class="pre">3)</span></code> 
+Array of geocentric positions for 3 sites (a,b,c).</li>
+<li><strong>times</strong> &#8211; (optional) <code class="docutils literal"><span class="pre">(start,</span> <span class="pre">stop,</span> <span class="pre">num_samples)</span></code> 
+Tuple setting the spacing of the uv-samples in time.  The <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">stop</span></code> times should be in hours and in the range [0,24].  <code class="docutils literal"><span class="pre">stop</span></code> is non-inclusive.</li>
+<li><strong>return_hour</strong> &#8211; (optional) 
+Return hour of uv samples as second item to unpack.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(num_measurements,</span> <span class="pre">3,</span> <span class="pre">2)</span></code> 
+Array of uv points where the order of the baselines along the first dimension (axis=1) is (ab,bc,ca).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.generateUV">
+<code class="descname">generateUV</code><span class="sig-paren">(</span><em>site_pair</em>, <em>theta</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.generateUV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate uv baseline.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>site_pair</strong> &#8211; <code class="docutils literal"><span class="pre">(2,</span> <span class="pre">3)</span></code> 
+Geocentric (x,y,z) positions of two sites.</li>
+<li><strong>theta</strong> &#8211; scalar 
+Angle in radians.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(2,</span> <span class="pre">)</span></code> 
+A uv point.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.hour">
+<code class="descname">hour</code><span class="sig-paren">(</span><em>theta</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.hour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to UT time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>theta</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">)</span></code> vector of angles in radians.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(n,</span> <span class="pre">)</span></code> vector of times in hours.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.sites">
+<code class="descname">sites</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.sites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up geocentric positions of sites by their string keyword.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> &#8211; List of site keys.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Array of site geocentric positions.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Target.theta">
+<code class="descname">theta</code><span class="sig-paren">(</span><em>hour</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Target.theta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from UT to angle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hour</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">)</span></code> 
+Vector of times in hours.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(n,</span> <span class="pre">)</span></code> 
+Vector of angles in radians.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="utilities.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="brane.html" class="btn btn-neutral" title="The Brane" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

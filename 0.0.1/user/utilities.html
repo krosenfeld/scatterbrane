@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Utilities &mdash; scatterbrane 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="scatterbrane 0.0.1 documentation" href="../index.html"/>
+        <link rel="next" title="Examples" href="examples.html"/>
+        <link rel="prev" title="The Target" href="tracks.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> scatterbrane
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="brane.html">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brane.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tracks.html">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracks.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cp_errors.html">Example: closure phase errors</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">scatterbrane</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/utilities.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-utils"></span><div class="section" id="utilities">
+<span id="id1"></span><h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<p>Your might find these functions useful.</p>
+<div class="section" id="module-scatterbrane.utilities">
+<span id="functions"></span><h2>Functions<a class="headerlink" href="#module-scatterbrane.utilities" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-utilities"></span><dl class="function">
+<dt id="scatterbrane.utilities.FTElementFast">
+<code class="descclassname">scatterbrane.utilities.</code><code class="descname">FTElementFast</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>baseline</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.utilities.FTElementFast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return complex visibility.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code> 
+numpy image array</li>
+<li><strong>dx</strong> &#8211; scalar 
+Pixel size in microarcseconds</li>
+<li><strong>baseline</strong> &#8211; <code class="docutils literal"><span class="pre">(2,</span> <span class="pre">)</span></code>
+(u,v) point in wavelengths</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To shift center try multipliny by <span class="math">\(\mathrm{exp}(\pi i u n_x\Delta_x)\)</span> and watch out for the axis orientation.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="scatterbrane.utilities.ensembleSmooth">
+<code class="descclassname">scatterbrane.utilities.</code><code class="descname">ensembleSmooth</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>brane</em>, <em>return_kernel=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.utilities.ensembleSmooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates ensemble averaged image given scattering kernel parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code> 
+numpy array</li>
+<li><strong>dx</strong> &#8211; scalar
+Pixel scale in microarcseconds</li>
+<li><strong>brane</strong> &#8211; Brane object.</li>
+<li><strong>return_kernel</strong> &#8211; (optional) bool 
+Return tuple with uv kernel (<code class="xref py py-func docutils literal"><span class="pre">nump.fft.rfft2()</span></code> format). See <code class="xref py py-func docutils literal"><span class="pre">getUVKernel()</span></code> for an alternate method.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scatterbrane.utilities.getUVKernel">
+<code class="descclassname">scatterbrane.utilities.</code><code class="descname">getUVKernel</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>brane</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.utilities.getUVKernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ensemble kernel in visibility plane for specified uv points.  See func:<cite>ensembleSmooth</cite> for an althernate method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">)</span></code> 
+Samples of u in units of wavelengths.</li>
+<li><strong>v</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">)</span></code> 
+Samples of v in units of wavelengths.</li>
+<li><strong>brane</strong> &#8211; Brane object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(n,</span> <span class="pre">)</span></code> Ensemble kernel complex visibility</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scatterbrane.utilities.loadSettings">
+<code class="descclassname">scatterbrane.utilities.</code><code class="descname">loadSettings</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.utilities.loadSettings" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Loads simulation settings from a file generated by <code class="xref py py-func docutils literal"><span class="pre">Brane.save_settings()</span></code>.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; string 
+File name that contains simulation settings.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary with simulation settings.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scatterbrane.utilities.regrid">
+<code class="descclassname">scatterbrane.utilities.</code><code class="descname">regrid</code><span class="sig-paren">(</span><em>a</em>, <em>inx</em>, <em>idx</em>, <em>onx</em>, <em>odx</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.utilities.regrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regrids array with a new resolution and pixel number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code> 
+Input numpy image</li>
+<li><strong>inx</strong> &#8211; int
+Number of input pixels on a side</li>
+<li><strong>idx</strong> &#8211; scalar
+Input resolution element</li>
+<li><strong>onx</strong> &#8211; int 
+Number of output pixels on a side</li>
+<li><strong>odx</strong> &#8211; scalar
+Output resolution element</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Array regridded to the new resolution and field of view.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scatterbrane.utilities.smoothImage">
+<code class="descclassname">scatterbrane.utilities.</code><code class="descname">smoothImage</code><span class="sig-paren">(</span><em>img</em>, <em>dx</em>, <em>fwhm</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.utilities.smoothImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns Image smoothed by a gaussian kernel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code> 
+numpy array</li>
+<li><strong>dx</strong> &#8211; scalar 
+Pixel scale in microarcseconds</li>
+<li><strong>fwhm</strong> &#8211; scalar
+Gaussian full width at half maximum in microarcseconds</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="scatterbrane.utilities.writefits">
+<code class="descclassname">scatterbrane.utilities.</code><code class="descname">writefits</code><span class="sig-paren">(</span><em>m</em>, <em>dx</em>, <em>dest='image.fits'</em>, <em>obsra=266.4168370833333</em>, <em>obsdec=-29.00781055555555</em>, <em>freq=230000000000.0</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.utilities.writefits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write fits file with header.  Defaults are set for Sgr A* at 1.3mm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>m</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code>
+numpy image array</li>
+<li><strong>dx</strong> &#8211; scalar 
+Pixel size in microarcseconds</li>
+<li><strong>dest</strong> &#8211; (optional) string 
+Output fits file name</li>
+<li><strong>obsra</strong> &#8211; (optional) scalar 
+Source right ascension</li>
+<li><strong>obsdec</strong> &#8211; (optional) scalar 
+Source declination</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tracks.html" class="btn btn-neutral" title="The Target" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

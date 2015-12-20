@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SimScat Module &mdash; SimScat 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SimScat 0.0.1 documentation" href="../index.html"/>
+        <link rel="prev" title="Installation" href="install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> SimScat
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">SimScat Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#module-simscat.utilities">Utilities</a></li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">SimScat</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>SimScat Module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/ss.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-simscat"></span><div class="section" id="simscat-module">
+<span id="ss"></span><h1>SimScat Module<a class="headerlink" href="#simscat-module" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<p>This section highlights some important aspects of the module.</p>
+<p>The first thing to do is load the <a class="reference internal" href="#simscat.SimScat" title="simscat.SimScat"><code class="xref py py-class docutils literal"><span class="pre">SimScat</span></code></a> class and logging module</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">simscat</span> <span class="kn">import</span> <span class="n">SimScat</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span> <span class="c"># for example</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="#simscat.SimScat" title="simscat.SimScat"><code class="xref py py-class docutils literal"><span class="pre">SimScat</span></code></a> object holds the parameters for the scattering screen and functions
+for generating images.  To initialize a simulation you contruct an instance of the screen
+and set parameters</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">SimScat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">)),</span><span class="mi">1</span><span class="p">,</span><span class="n">nphi</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span><span class="n">screen_res</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">wavelength</span><span class="o">=</span><span class="mf">3e-6</span><span class="p">,</span><span class="n">r_inner</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example I have set the source to be empty
+with a pixel size of 1 :math:&#8217;muas&#8217;.  Upon initialization, <a class="reference internal" href="#simscat.SimScat" title="simscat.SimScat"><code class="xref py py-class docutils literal"><span class="pre">SimScat</span></code></a> creates a version of the
+source image whose pixel size is chosen to match the screen.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The resolution of the scattered (<cite>iss</cite>) and source images (<cite>isrc</cite>) may not match the original
+resolution element you provided SimScat.  You should access the property through <cite>dx</cite>.</p>
+</div>
+<p>Construction of a <a class="reference internal" href="#simscat.SimScat" title="simscat.SimScat"><code class="xref py py-class docutils literal"><span class="pre">SimScat</span></code></a> instance will check some properties:</p>
+<ul class="simple">
+<li>Screen covers the source image.</li>
+<li>Source image is square.</li>
+<li>Inner turbulence scale is larger than the phase coherence length.</li>
+<li>Resolution element of the screen is larger than the inner turbulence scale.</li>
+<li>(warning) Is the image resolution approaching the refractive scale.</li>
+</ul>
+<p>We can now proceed to generate the phase screen and scatter the source image:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">s</span><span class="o">.</span><span class="n">generateScreen</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Go over rotation.</p>
+<p>Look at initialization.</p>
+</div>
+<div class="section" id="class-methods">
+<h2>Class Methods<a class="headerlink" href="#class-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simscat.SimScat">
+<em class="property">class </em><code class="descclassname">simscat.</code><code class="descname">SimScat</code><span class="sig-paren">(</span><em>model</em>, <em>dx</em>, <em>nphi=4096</em>, <em>screen_res=2</em>, <em>wavelength=1.3e-06</em>, <em>dpc=8400</em>, <em>rpc=5800</em>, <em>r0='sgra'</em>, <em>r_outer=10000000</em>, <em>r_inner=12</em>, <em>alpha='kolmogorov'</em>, <em>anisotropy=2.045</em>, <em>pa=78</em>, <em>match_screen_res=False</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scattering simulation object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> &#8211; The input model or source image which may be a data cube for polarization (stokes axis=0).</li>
+<li><strong>dx</strong> &#8211; Resolution element of model in uas.</li>
+<li><strong>nphi</strong> &#8211; (optional)
+Number of pixels in a screen.</li>
+<li><strong>screen_res</strong> &#8211; (optional)
+Size of a screen pixel in units of <span class="math">\(R_0\)</span></li>
+<li><strong>wavelength</strong> &#8211; (optional)
+Observing wavelength in km.</li>
+<li><strong>dpc</strong> &#8211; (optional)
+Observer-Source distance in parsecs.</li>
+<li><strong>rpc</strong> &#8211; (optional)
+Observer-Scatterer distance in parsecs.</li>
+<li><strong>r0</strong> &#8211; (optional)
+Phase coherence length along major axis as preset string or in km.</li>
+<li><strong>r_outer</strong> &#8211; (optional)
+Outer scale of turbulence in units of <span class="math">\(R_0\)</span></li>
+<li><strong>r_inner</strong> &#8211; (optional)
+Inner scale of turbulence in units of <span class="math">\(R_0\)</span></li>
+<li><strong>alpha</strong> &#8211; (optional)
+Preset string or float to set power-law index for tubulence scaling (e.g., Kolmogorov has <span class="math">\(\alpha= 5/3\)</span>)</li>
+<li><strong>anisotropy</strong> &#8211; (optional)
+Anisotropy for screen is the EW / NS elongation.</li>
+<li><strong>pa</strong> &#8211; (optional)
+Orientation of kernel&#8217;s major axis, E of N, in degrees.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An instance of a scattering simulation.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>s = ScatSim(m,dx,nphi=2**12,screen_res=5.,wavelength=3.0e-6,dpc=8.4e3,rpc=5.8e3)</p>
+<p>where <code class="docutils literal"><span class="pre">s</span></code> is the class instance, <code class="docutils literal"><span class="pre">m</span></code> is the image array, <code class="docutils literal"><span class="pre">nphi</span></code> is the number of screen pixels,
+<code class="docutils literal"><span class="pre">wavelength</span></code> is the observing wavelength.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><span class="math">\(R_0\)</span> is the phase coherence length and Sgr A* defaults are from Bower et al. (2006).</p>
+</div>
+<dl class="method">
+<dt id="simscat.SimScat.chatter">
+<code class="descname">chatter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat.chatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print information about the current scattering simulation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Many parameters are cast as integers.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="simscat.SimScat.checkSanity">
+<code class="descname">checkSanity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat.checkSanity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that screen parameters are consistent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simscat.SimScat.generateScreen">
+<code class="descname">generateScreen</code><span class="sig-paren">(</span><em>seed=None</em>, <em>save_phi=None</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat.generateScreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate screen phases</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>seed</strong> &#8211; Seed for random number generator</li>
+<li><strong>save_phi</strong> &#8211; To save the screen, set this to the filename.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="simscat.SimScat.load_src">
+<code class="descname">load_src</code><span class="sig-paren">(</span><em>stokes=(0</em>, <em>)</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat.load_src" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the source image from model (changes size and resolution to match the screen).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stokes</strong> &#8211; Stokes parameters to consider.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="simscat.SimScat.readScreen">
+<code class="descname">readScreen</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat.readScreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in screen phases from a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; File containing the screen phases.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="simscat.SimScat.saveSettings">
+<code class="descname">saveSettings</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat.saveSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save screen settings to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; settings filename</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="simscat.SimScat.scatter">
+<code class="descname">scatter</code><span class="sig-paren">(</span><em>sp=0</em>, <em>stokes=(0</em>, <em>)</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.SimScat.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the scattered image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sp</strong> &#8211; Number of screen pixels to roll the screen along in the x-dimension.</li>
+<li><strong>stokes</strong> &#8211; Stokes parameters to include in the scattering calculation.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The screen stays fixed after each roll so the effect of <code class="docutils literal"><span class="pre">sp</span></code> will be cumulative.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-simscat.utilities">
+<span id="utilities"></span><h1>Utilities<a class="headerlink" href="#module-simscat.utilities" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="simscat.utilities.loadSettings">
+<code class="descclassname">simscat.utilities.</code><code class="descname">loadSettings</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.utilities.loadSettings" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Loads simulation settings from a file generated by <code class="xref py py-class docutils literal"><span class="pre">SimScat.save_settings</span></code>.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; file name that contains simulation settings</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary with simulation settings.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">File must be generated by save_settings function.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="simscat.utilities.regrid">
+<code class="descclassname">simscat.utilities.</code><code class="descname">regrid</code><span class="sig-paren">(</span><em>a</em>, <em>inx</em>, <em>idx</em>, <em>onx</em>, <em>odx</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.utilities.regrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regrids array with a new resolution and pixel number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> &#8211; input square, 2D array</li>
+<li><strong>inx</strong> &#8211; number of input pixels on a side</li>
+<li><strong>idx</strong> &#8211; input resolution element</li>
+<li><strong>onx</strong> &#8211; number of output pixels on a side</li>
+<li><strong>odx</strong> &#8211; output resolution element</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Array regridded to the new resolution and field of view.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="simscat.utilities.velocityMilkyWayScreen">
+<code class="descclassname">simscat.utilities.</code><code class="descname">velocityMilkyWayScreen</code><span class="sig-paren">(</span><em>d</em>, <em>l</em>, <em>model='galpy'</em>, <em>includeW=False</em><span class="sig-paren">)</span><a class="headerlink" href="#simscat.utilities.velocityMilkyWayScreen" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d</strong> &#8211; Distance to screen in pc</li>
+<li><strong>l</strong> &#8211; Galactic longitude in degrees</li>
+<li><strong>model</strong> &#8211; (optional) string indicator for rotation curve model.</li>
+<li><strong>includeW</strong> &#8211; (optional) include vertical motion of Sun</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(float) Projected velocity of screen.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Model uses parameters from Reid et al. 2014 and galpy.</p>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

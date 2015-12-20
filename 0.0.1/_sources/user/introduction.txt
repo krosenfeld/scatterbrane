@@ -1,0 +1,11 @@
+.. module:: scatterbrane
+
+.. _introduction
+
+Introduction
+============
+Background information.
+
+FAQ
+---
+* What are the conditions when scatterbrane can be applied?

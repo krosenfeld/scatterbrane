@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ScatterBrane &mdash; scatterbrane 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="scatterbrane 0.0.1 documentation" href="#"/>
+        <link rel="next" title="The Brane" href="user/brane.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="#" class="icon icon-home"> scatterbrane
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="user/brane.html">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/brane.html#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/brane.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/tracks.html">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/tracks.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/utilities.html#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/cp_errors.html">Closure phase errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ensemble_average.html">Ensemble average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/time_variability.html">Time variability</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">scatterbrane</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>ScatterBrane</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="scatterbrane">
+<h1>ScatterBrane<a class="headerlink" href="#scatterbrane" title="Permalink to this headline">¶</a></h1>
+<p>A python package for simulating realistically scattered images.</p>
+<p>scatterbrane allows for anisotropic scattering kernels as well as time variability studies.  For a
+lightweight version try <a class="reference external" href="https://github.com/krosenfeld/slimscat">SlimScat</a>.</p>
+<p>The package is composed of two classes.  A <code class="xref py py-class docutils literal"><span class="pre">Brane</span></code> is used to simulate the scattering while
+a <code class="xref py py-class docutils literal"><span class="pre">Target</span></code> can be used to calculate complex visibilities and closure phases.  We have also
+included some helpful functions in the <code class="docutils literal"><span class="pre">utiilties</span></code> module.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a pre-release of scatterbrane.  If you have a problem please submit a pull request on the git repository.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Download the latest version from the <a class="reference external" href="https://github.com/krosenfeld/simscat">GitHub repository</a>
+, change to the main directory and run:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python setup.py install
+</pre></div>
+</div>
+<p>You can test your installation using the provided <a class="reference internal" href="user/examples.html"><em>examples</em></a>.</p>
+</div>
+<div class="section" id="quick-guide">
+<h2>Quick Guide<a class="headerlink" href="#quick-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user/brane.html">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/brane.html#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/brane.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/tracks.html">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/tracks.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/utilities.html#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/cp_errors.html">Closure phase errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ensemble_average.html">Ensemble average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/time_variability.html">Time variability</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>If you make use of this code, please cite
+<a class="reference external" href="http://adsabs.harvard.edu/abs/2015ApJ...805..180J">Johnson, M. D., &amp; Gwinn, C. R. 2015, ApJ, 805, 180</a>.</p>
+<p>If you are interested in learning more about the physics
+of scattering in this regime see these papers:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://adsabs.harvard.edu/abs/1992RSPTA.341..151N">The physics of Pulsar scintillation</a></li>
+<li><a class="reference external" href="http://adsabs.harvard.edu/abs/1989MNRAS.238..963N">The shape of a scatter-broadened image.</a></li>
+<li><a class="reference external" href="http://adsabs.harvard.edu/abs/1990ARA%26A..28..561R">Radio propagation through the turbulent interstellar plasma</a></li>
+</ul>
+<p>This documentation is styled after <a class="reference external" href="https://github.com/dfm">dfm&#8217;s projects</a>.</p>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="user/brane.html" class="btn btn-neutral float-right" title="The Brane" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

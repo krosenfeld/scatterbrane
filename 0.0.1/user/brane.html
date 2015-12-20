@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>The Brane &mdash; scatterbrane 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="scatterbrane 0.0.1 documentation" href="../index.html"/>
+        <link rel="next" title="The Target" href="tracks.html"/>
+        <link rel="prev" title="ScatterBrane" href="../index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../index.html" class="icon icon-home"> scatterbrane
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">The Brane</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tracks.html">The Target</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tracks.html#class-methods">Class Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scatterbrane.utilities">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cp_errors.html">Closure phase errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble_average.html">Ensemble average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_variability.html">Time variability</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">scatterbrane</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>The Brane</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/brane.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <span class="target" id="module-brane"></span><div class="section" id="the-brane">
+<span id="brane"></span><h1>The Brane<a class="headerlink" href="#the-brane" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<p>This section highlights some important aspects of the module.</p>
+<p>The first thing to do is load the <code class="xref py py-class docutils literal"><span class="pre">Brane</span></code> class and logging module</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scatterbrane</span> <span class="kn">import</span> <span class="n">Brane</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span> <span class="c"># for example</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">Brane</span></code> object holds the parameters for the scattering screen and functions
+for generating images.  To initialize a simulation you contruct an instance of the screen
+and set parameters</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Brane</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">)),</span><span class="mi">1</span><span class="p">,</span><span class="n">nphi</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span><span class="n">screen_res</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">wavelength</span><span class="o">=</span><span class="mf">3e-6</span><span class="p">,</span><span class="n">r_inner</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example I have set the source to be empty
+with a pixel size of 1 microarcsecond.  Upon initialization, <code class="xref py py-class docutils literal"><span class="pre">Brane</span></code> creates
+a version of the source image whose pixel size is chosen to match the screen.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The resolution of the scattered (<cite>iss</cite>) and source images (<cite>isrc</cite>) may not match the original
+resolution element you provided Brane.  You should access the property through <cite>dx</cite>.</p>
+</div>
+<p>So in general, the screen has some resolution size (in km) which you can acces via
+<code class="docutils literal"><span class="pre">screen_dx</span></code> and each pixel in the scattered image is some integer factor of
+the screen pixel size (<code class="docutils literal"><span class="pre">ips</span></code>).</p>
+<p>Construction of a <code class="xref py py-class docutils literal"><span class="pre">Brane</span></code> instance will check some properties:</p>
+<ul class="simple">
+<li>Is the image resolution approaching the refractive scale? (warning only)</li>
+<li>Screen covers the source image.</li>
+<li>Source image is square.</li>
+<li>Inner turbulence scale is larger than the phase coherence length.</li>
+<li>Resolution element of the screen is larger than the inner turbulence scale.</li>
+<li>A screen pixel is smaller than inner turbulence scale.</li>
+<li>Image is smooth enough to satisfy the approximation for equation 12 in Johnson &amp; Gwinn (2015):</li>
+</ul>
+<div class="math">
+\[V_{\mathrm{src}}\left(\frac{(1+M)r_{\mathrm{inner}}}{\lambda}\right) \ll V_{\mathrm{src}}(0)\]</div>
+<p>We can now proceed to generate the phase screen and scatter the source image:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">b</span><span class="o">.</span><span class="n">generateScreen</span><span class="p">()</span>
+<span class="n">b</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>By default, for anisotropic scattering with some position angle, <code class="xref py py-func docutils literal"><span class="pre">scatter()</span></code> rotates the source
+structure.  This may introduce artifacts and reduce performance.  See <a class="reference external" href="examples">the examples</a> for
+some ways around this.</p>
+</div>
+<div class="section" id="class-methods">
+<h2>Class Methods<a class="headerlink" href="#class-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scatterbrane.Brane">
+<em class="property">class </em><code class="descclassname">scatterbrane.</code><code class="descname">Brane</code><span class="sig-paren">(</span><em>model</em>, <em>dx</em>, <em>nphi=4096</em>, <em>screen_res=2</em>, <em>wavelength=0.0013</em>, <em>dpc=8400</em>, <em>rpc=5800</em>, <em>r0='sgra'</em>, <em>r_outer=10000000</em>, <em>r_inner=12</em>, <em>alpha='kolmogorov'</em>, <em>anisotropy=2.045</em>, <em>pa=78</em>, <em>match_screen_res=False</em>, <em>live_dangerously=False</em>, <em>think_positive=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Brane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scattering simulation object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code>
+Numpy array of the source image.</li>
+<li><strong>dx</strong> &#8211; scalar 
+Resolution element of model in uas.</li>
+<li><strong>nphi</strong> &#8211; (optional) <code class="docutils literal"><span class="pre">(2,</span> <span class="pre">)</span></code> or scalar
+Number of pixels in a screen.  This may be a tuple specifying the dimensions of a rectangular screen.</li>
+<li><strong>screen_res</strong> &#8211; (optional) scalar
+Size of a screen pixel in units of <span class="math">\(R_0\)</span>.</li>
+<li><strong>wavelength</strong> &#8211; (optional) scalar
+Observing wavelength in meters.</li>
+<li><strong>dpc</strong> &#8211; (optional) scalar
+Observer-Source distance in parsecs.</li>
+<li><strong>rpc</strong> &#8211; (optional) scalar
+Observer-Scatterer distance in parsecs.</li>
+<li><strong>r0</strong> &#8211; (optional) scalar
+Phase coherence length along major axis as preset string or in km.</li>
+<li><strong>r_outer</strong> &#8211; (optional) scalar
+Outer scale of turbulence in units of <span class="math">\(R_0\)</span>.</li>
+<li><strong>r_inner</strong> &#8211; (optional) scalar
+Inner scale of turbulence in units of <span class="math">\(R_0\)</span>.</li>
+<li><strong>alpha</strong> &#8211; (optional) string or scalar
+Preset string or float to set power-law index for tubulence scaling (e.g., Kolmogorov has <span class="math">\(\alpha= 5/3\)</span>)</li>
+<li><strong>anisotropy</strong> &#8211; (optional) scalar
+Anisotropy for screen is the EW / NS elongation.</li>
+<li><strong>pa</strong> &#8211; (optional) scalar
+Orientation of kernel&#8217;s major axis, East of North, in degrees.</li>
+<li><strong>live_dangerously</strong> &#8211; (optional) bool
+Skip the parameter checks?</li>
+<li><strong>think_positive</strong> &#8211; (optional) bool
+Should we enforce that the source image has no negative pixel values?</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An instance of a scattering simulation.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">Brane</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">nphi</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span><span class="n">screen_res</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span><span class="n">wavelength</span><span class="o">=</span><span class="mf">3.0e-3</span><span class="p">,</span><span class="n">dpc</span><span class="o">=</span><span class="mf">8.4e3</span><span class="p">,</span><span class="n">rpc</span><span class="o">=</span><span class="mf">5.8e3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">s</span></code> is the class instance, <code class="docutils literal"><span class="pre">m</span></code> is the image array, <code class="docutils literal"><span class="pre">nphi</span></code> is the number of screen pixels,
+<code class="docutils literal"><span class="pre">wavelength</span></code> is the observing wavelength.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><span class="math">\(R_0\)</span> is the phase coherence length and Sgr A* defaults are from Bower et al. (2006).</p>
+</div>
+<dl class="method">
+<dt id="scatterbrane.Brane.chatter">
+<code class="descname">chatter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Brane.chatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print information about the current scattering simulation where many parameters are cast as integers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Brane.generatePhases">
+<code class="descname">generatePhases</code><span class="sig-paren">(</span><em>seed=None</em>, <em>save_phi=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Brane.generatePhases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate screen phases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>seed</strong> &#8211; (optional) scalar
+Seed for random number generator</li>
+<li><strong>save_phi</strong> &#8211; (optional) string 
+To save the screen, set this to the filename.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Brane.readScreen">
+<code class="descname">readScreen</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Brane.readScreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in screen phases from a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; string 
+File containing the screen phases.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Brane.saveSettings">
+<code class="descname">saveSettings</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Brane.saveSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save screen settings to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; string 
+settings filename</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Brane.scatter">
+<code class="descname">scatter</code><span class="sig-paren">(</span><em>move_pix=0</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Brane.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the scattered image which is stored in the <code class="docutils literal"><span class="pre">iss</span></code> member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>move_pix</strong> &#8211; (optional) int 
+Number of pixels to roll the screen (for time evolution).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scatterbrane.Brane.setModel">
+<code class="descname">setModel</code><span class="sig-paren">(</span><em>model</em>, <em>dx</em>, <em>think_positive=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scatterbrane.Brane.setModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set new model for the source.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong> &#8211; <code class="docutils literal"><span class="pre">(n,</span> <span class="pre">n)</span></code>
+Numpy image array.</li>
+<li><strong>dx</strong> &#8211; scalar
+Pixel size in microarcseconds.</li>
+<li><strong>think_positive</strong> &#8211; (optional) bool
+Should we enforce that the source image has no negative pixel values?</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tracks.html" class="btn btn-neutral float-right" title="The Target" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="ScatterBrane" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Katherine Rosenfeld.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
