@@ -1,0 +1,10 @@
+.DS_store
+*.pyc
+dist
+build
+*.egg-info
+*.png
+*.gif
+*.mp4
+*.swp
+scratch
