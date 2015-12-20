@@ -28,14 +28,18 @@ and set parameters
     b = Brane(np.zeros((64,64)),1,nphi=4096,screen_res=5,wavelength=3e-6,r_inner=100)
 
 In this example I have set the source to be empty
-with a pixel size of 1 microarcsecond.  Upon initialization, :class:`Brane` creates a version of the 
-source image whose pixel size is chosen to match the screen.  
+with a pixel size of 1 microarcsecond.  Upon initialization, :class:`Brane` creates 
+a version of the source image whose pixel size is chosen to match the screen.  
 
 
 .. warning::
 
     The resolution of the scattered (`iss`) and source images (`isrc`) may not match the original
     resolution element you provided Brane.  You should access the property through `dx`.
+
+So in general, the screen has some resolution size (in km) which you can acces via 
+``screen_dx`` and each pixel in the scattered image is some integer factor of 
+the screen pixel size (``ips``).
 
 Construction of a :class:`Brane` instance will check some properties:
 
