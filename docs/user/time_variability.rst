@@ -9,7 +9,7 @@ This example demonstrates how to incorporate time
 variability into the scattering simulation.  The 
 python script covers:
 
-1. Scattering a timeseries of images (also called a movie).
+1. Scattering a timeseries of images.
 2. Incorporting the motion of the screen relative to the Earth.
 3. Calculating the total flux modulation introduced by the scattering.
 4. Using some optimized settings to speed up the calculation.

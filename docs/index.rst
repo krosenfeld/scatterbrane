@@ -16,14 +16,14 @@ included some helpful functions in the ``utiilties`` module.
 
 Installation
 ------------
-Download the latest version from the `GitHub repository <https://github.com/krosenfeld/simscat>`_
+Download the latest version from the `GitHub repository <https://github.com/krosenfeld/scatterbrane>`_
 , change to the main directory and run:
 
 .. code-block:: bash
 
     python setup.py install
 
-You can test your installation using the provided :doc:`examples <user/examples>`.
+You will need working installations of `numpy <http://www.numpy.org/>`_, `scipy <http://www.scipy.org/>`_, and `astropy <http://www.astropy.org/>`_.  You can test your installation using the provided :doc:`examples <user/examples>` which also require `palettable <https://jiffyclub.github.io/palettable/>`_.
 
 Quick Guide
 -----------
