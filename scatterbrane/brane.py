@@ -258,7 +258,6 @@ class Brane(object):
       np.random.seed(seed=seed)
 
     # include anisotropy
-    #qx2, qy2 = np.meshgrid(np.fft.rfftfreq(self.nphi)**2,np.fft.fftfreq(self.nphi)**2*self.anisotropy**2)
     qx2 = dot(transpose([np.ones(self.nphi[0])]),[np.fft.rfftfreq(self.nphi[1])**2])
     qy2 = dot(transpose([np.fft.fftfreq(self.nphi[0])**2*self.anisotropy**2]),[np.ones(self.nphi[1]//2+1)])
     rr = qx2+qy2
@@ -391,65 +390,11 @@ class Brane(object):
     else:
       yyi = np.rint((yy+dphi_y+self.nx/2) ).astype(np.int) % self.nx
       xxi = np.rint((xx_+dphi_x+self.nx/2)).astype(np.int) % self.nx
-      self.iss = self.isrc[yyi,xxi]
-
-  def _scatter(self,move_pix=0,stokes=(0,)):
-    '''
-    Generate the scattered image which is stored in the ``iss`` member.
-
-    :param move_pix: (optional) int 
-      Number of pixels to roll the screen (for time evolution).
-    '''
-
-    M = self.model.shape[-1]       # size of original image array
-    N = self.nx                    # size of output image array
-
-    if not self.live_dangerously: self._checkSanity()
-
-    # calculate phase gradient
-    dphi_x,dphi_y = self._calculate_dphi(move_pix=move_pix)
-
-    if len(self.model.shape) == 2:
-      self.model = reshape(self.model,(1,M,M))
-      self.isrc = reshape(self.isrc,(1,N,N))
-      self.iss  = empty((1,N,N))
-    else:
-      self.iss  = empty((self.model.shape[0],N,N))
-
-
-    for s in stokes:
-      xx_,yy = np.meshgrid((np.arange(N) - 0.5*(N-1)),\
-                           (np.arange(N) - 0.5*(N-1)),indexing='xy')
-
-      # check whether we care about PA of scattering kernel
-      if self.pa != None:
-        f_model = RectBivariateSpline(self.model_dx/self.dx*(np.arange(M) - 0.5*(M-1)),\
-                                    self.model_dx/self.dx*(np.arange(M) - 0.5*(M-1)),\
-                                    self.model[s,:,:])
-
-        # apply rotation
-        theta = -(90 * pi / 180) + np.radians(self.pa)     # rotate CW 90 deg, then CCW by PA
-        xx_ += dphi_x
-        yy  += dphi_y
-        xx = cos(theta)*xx_ - sin(theta)*yy
-        yy = sin(theta)*xx_ + cos(theta)*yy
-        self.iss[s,:,:]  = f_model.ev(yy.flatten(),xx.flatten()).reshape((self.nx,self.nx))
-
-        # rotate back and clip for positive values for I
-        if s == 0:
-            self.iss[s,:,:]  = clip(rotate(self.iss[s,:,:],-1*theta/np.pi*180,reshape=False),a_min=0,a_max=1e30) * (self.dx/self.model_dx)**2
-        else:
-            self.iss[s,:,:]  =rotate(self.iss[s,:,:],-1*theta/np.pi*180,reshape=False)
-
-      # otherwise do a faster lookup rather than the expensive interpolation.
+      if self.think_positive:
+        self.iss = clip(self.isrc[yyi,xxi],a_min=0,a_max=1e30)
       else:
-        yyi = np.rint((yy+dphi_y+self.nx/2) ).astype(np.int) % self.nx
-        xxi = np.rint((xx_+dphi_x+self.nx/2)).astype(np.int) % self.nx
-        self.iss[s,:,:] = self.isrc[s,yyi,xxi]
+        self.iss = self.isrc[yyi,xxi]
 
-    self.iss  = np.squeeze(self.iss)
-    self.model= np.squeeze(self.model)
-    self.isrc = np.squeeze(self.isrc)
 
   def _load_src(self,stokes=(0,),think_positive=True):
     '''
