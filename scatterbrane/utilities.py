@@ -49,7 +49,10 @@ def ensembleSmooth(img,dx,brane,return_kernel=False):
     u = np.dot(np.transpose([np.ones(nx)]),[np.fft.rfftfreq(nx,d=dx*np.radians(1.)/(3600*1e6))])
 
     # rotate
-    theta = np.radians(90-brane.pa)
+    if brane.pa != None:
+        theta = np.radians(90-brane.pa)
+    else:
+        theta = np.radians(0.)
     u_ = np.cos(theta)*u - np.sin(theta)*v
     v = np.sin(theta)*u + np.cos(theta)*v
 
@@ -79,7 +82,11 @@ def getUVKernel(u,v,brane):
     sigma_min = sigma_maj / brane.anisotropy
 
     # rotate
-    theta = np.radians(90-brane.pa)
+    if brane.pa != None:
+        theta = np.radians(90-brane.pa)
+    else:
+        theta = np.radians(0.)
+
     u_ = np.cos(theta)*u - np.sin(theta)*v
     v_ = np.sin(theta)*u + np.cos(theta)*v
 
