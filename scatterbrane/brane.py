@@ -357,12 +357,15 @@ class Brane(object):
     self.logger.debug('{0:d},{1:d}'.format(*dphi_x.shape))
     return dphi_x,dphi_y
   
-  def scatter(self,move_pix=0):
+  def scatter(self,move_pix=0,scale=1):
     '''
     Generate the scattered image which is stored in the ``iss`` member.
 
     :param move_pix: (optional) int 
       Number of pixels to roll the screen (for time evolution).
+    :param scale: (optional) scalar
+      Scale factor for gradient.  To simulate the scattering effect at another 
+      wavelength this is (lambda_new/lambda_old)**2
     '''
 
     M = self.model.shape[-1]       # size of original image array
@@ -372,6 +375,10 @@ class Brane(object):
 
     # calculate phase gradient
     dphi_x,dphi_y = self._calculate_dphi(move_pix=move_pix)
+
+    if scale != 1:
+        dphi_x *= scale/sqrt(2.)
+        dphi_y *= scale/sqrt(2.)
 
     xx_,yy = np.meshgrid((np.arange(N) - 0.5*(N-1)),\
                          (np.arange(N) - 0.5*(N-1)),indexing='xy')
