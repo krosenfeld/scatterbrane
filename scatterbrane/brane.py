@@ -131,8 +131,10 @@ class Brane(object):
     else:
         self.nphi = nphi
     self.nphi = np.asarray(self.nphi)
-    self.qmax = 1.*screen_res/r_inner                            # 1 / inner turbulence scale in pix
-    self.qmin = 1.*screen_res/r_outer                            # 1 / outer tubulence scale in pix
+    self.r_inner = r_inner                                       # inner turbulence scale in r0
+    self.r_outer = r_outer                                       # outer turbulence scale in r0
+    #self.qmax = 1.*screen_res/r_inner                            # 1 / inner turbulence scale in pix
+    #self.qmin = 1.*screen_res/r_outer                            # 1 / outer tubulence scale in pix
     if alpha == 'kolmogorov':
         self.alpha = 5./3
     else:
@@ -165,18 +167,23 @@ class Brane(object):
     assert self.ips % 1 == 0, 'image/screen pixels should be an integer'
 
     # is inner turbulence scale larger than r0?
-    assert 1./self.qmax > self.r0/self.screen_dx, 'turbulence inner scale < r0'
+    #assert 1./self.qmax > self.r0/self.screen_dx, 'turbulence inner scale < r0'
+    assert self.r_inner > 1., 'turbulence inner scale < r0'
 
     # check image smoothness
     V = fft2(self.isrc)
     freq = fftfreq(self.nx,d=self.dx*radians(1.)/(3600*1e6))
     u = dot(transpose([np.ones(self.nx)]),[freq])
     v = dot(transpose([freq]),[ones(self.nx)])
-    assert max(abs(V[sqrt(u*u+v*v) > (1.+self.m)*self.screen_dx/self.qmax/self.wavelength])) / self.isrc.sum() < 0.01, \
-        'image is not smooth enough'
+    try:
+        if max(abs(V[sqrt(u*u+v*v) > (1.+self.m)*self.r_inner*self.r0/self.wavelength])) / self.isrc.sum() > 0.01:
+         self.logger.warning('image is not smooth enough:  {0:g} > 0.01'.format(max(abs(V[sqrt(u*u+v*v) > (1.+self.m)*self.r_inner*self.r0/self.wavelength])) / self.isrc.sum()))
+    except ValueError:
+        self.logger.warning('r_inner is too large to test smoothness')
 
     # is screen pixel smaller than inner turbulence scale?
-    assert 1./self.qmax >= 1, 'screen pixel > turbulence inner scale'
+    #assert 1./self.qmax >= 1, 'screen pixel > turbulence inner scale'
+    assert self.r_inner*self.r0/self.screen_dx >= 1, 'screen pixel > turbulence inner scale'
 
     if (self.rf*self.rf/self.r0/(self.ips*self.screen_dx) < 3):
       self.logger.warning('WARNING: image resolution is approaching Refractive scale')
@@ -191,7 +198,8 @@ class Brane(object):
     self.logger.info( (fmt + "{1:d}").format('Phase coherence length [km]',int(self.r0))           )
     self.logger.info( (fmt + "{1:d}").format('Fresnel scale [km]',int(self.rf))                    )
     self.logger.info( (fmt + "{1:d}").format('Refractive scale [km]',int(self.rf**2/self.r0))     )
-    self.logger.info( (fmt + "{1:d}").format('Inner turbulence scale [km]',int(self.screen_dx/self.qmax)))
+    #self.logger.info( (fmt + "{1:d}").format('Inner turbulence scale [km]',int(self.screen_dx/self.qmax)))
+    self.logger.info( (fmt + "{1:d}").format('Inner turbulence scale [km]',int(self.r_inner*self.r0)))
     self.logger.info( (fmt + "{1:d}").format('Screen resolution [km]',int(self.screen_dx)))
     self.logger.info( (fmt + "{1:d} {2:d}").format('Linear filling factor [%,%]',*map(int,100.*self.nx*self.ips/self.nphi)) )
     self.logger.info( (fmt + "{1:g}").format('Image resolution [uas]',self.dx))
@@ -265,7 +273,9 @@ class Brane(object):
 
     # generating phases with given power spectrum
     size = rr.shape 
-    phi_t = (1/sqrt(2) * sqrt(exp(-1./(self.qmax*self.qmax)*rr) * (rr + self.qmin*self.qmin)**(-0.5*(self.alpha+2.)))) \
+    qmax2 = (self.r_inner*self.r0/self.screen_dx)**-2
+    qmin2 = (self.r_outer*self.r0/self.screen_dx)**-2
+    phi_t = (1/sqrt(2) * sqrt(exp(-1./qmax2*rr) * (rr + qmin2)**(-0.5*(self.alpha+2.)))) \
             * (np.random.normal(size=size) + 1j * np.random.normal(size=size))
 
     # calculate phi
@@ -358,7 +368,7 @@ class Brane(object):
     M = self.model.shape[-1]       # size of original image array
     N = self.nx                    # size of output image array
 
-    if not self.live_dangerously: self._checkSanity()
+    #if not self.live_dangerously: self._checkSanity()
 
     # calculate phase gradient
     dphi_x,dphi_y = self._calculate_dphi(move_pix=move_pix)
@@ -388,7 +398,7 @@ class Brane(object):
 
     # otherwise do a faster lookup rather than the expensive interpolation.
     else:
-      yyi = np.rint((yy+dphi_y+self.nx/2) ).astype(np.int) % self.nx
+      yyi = np.rint((yy+dphi_y+self.nx/2)).astype(np.int) % self.nx
       xxi = np.rint((xx_+dphi_x+self.nx/2)).astype(np.int) % self.nx
       if self.think_positive:
         self.iss = clip(self.isrc[yyi,xxi],a_min=0,a_max=1e30)
@@ -457,6 +467,8 @@ class Brane(object):
     f.write("ips \t {0}\n".format(self.ips))
     f.write("dx \t {0}\n".format(self.dx))
     f.write("nx \t {0}\n".format(self.nx))
-    f.write("qmax \t {0}\n".format(self.qmax))        # 1./inner turbulence scale in screen pixels
-    f.write("qmin \t {0}\n".format(self.qmin))        # 1./inner turbulence scale in screen pixels
+    f.write("qmax \t {0}\n".format(self.r_inner))        # inner turbulence scale in r0 
+    f.write("qmin \t {0}\n".format(self.r_outer))        # outer turbulence scale in r0 
+    #f.write("qmax \t {0}\n".format(self.qmax))        # 1./inner turbulence scale in screen pixels
+    #f.write("qmin \t {0}\n".format(self.qmin))        # 1./inner turbulence scale in screen pixels
     f.close()
