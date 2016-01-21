@@ -28,6 +28,20 @@ def smoothImage(img,dx,fwhm):
     '''
     return gaussian_filter(img,fwhm/(2*np.sqrt(np.log(4)))/dx)
 
+def getCoherenceLength(theta,wavelength=1.3e-3,magnification=0.448):
+    '''
+    :param theta: scalar
+        FWHM of scattering kernel at 1 cm in milli-arcseconds.
+    :param wavelength: (optional) scalar
+        Observing wavelength in meters
+    :param magnification: (optional) scalar
+        Magnification factor (scatterer-observer)/(source-scatterer).
+
+    :returns: scalar
+        Coherence length in km.
+    '''
+    return (wavelength*1e-3)*np.sqrt(np.log(4))/(np.pi*np.sqrt(1+magnification)**2* np.radians(1e-3/3600*theta*(wavelength*1e2)**2))
+
 def ensembleSmooth(img,dx,brane,return_kernel=False):
     '''
     Generates ensemble averaged image given scattering kernel parameters.
