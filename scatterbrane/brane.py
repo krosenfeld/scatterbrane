@@ -269,7 +269,7 @@ class Brane(object):
     qx2 = dot(transpose([np.ones(self.nphi[0])]),[np.fft.rfftfreq(self.nphi[1])**2])
     qy2 = dot(transpose([np.fft.fftfreq(self.nphi[0])**2*self.anisotropy**2]),[np.ones(self.nphi[1]//2+1)])
     rr = qx2+qy2
-    rr[rr == 0] = 0.02  # arbitrary normalization
+    rr[0,0] = 0.02  # arbitrary normalization
 
     # generating phases with given power spectrum
     size = rr.shape 
