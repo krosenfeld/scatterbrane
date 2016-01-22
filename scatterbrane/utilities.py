@@ -40,7 +40,8 @@ def getCoherenceLength(theta,wavelength=1.3e-3,magnification=0.448):
     :returns: scalar
         Coherence length in km.
     '''
-    return (wavelength*1e-3)*np.sqrt(np.log(4))/(np.pi*np.sqrt(1+magnification)**2* np.radians(1e-3/3600*theta*(wavelength*1e2)**2))
+    #return (wavelength*1e-3)*np.sqrt(np.log(4))/(np.pi*np.sqrt(1+magnification)**2*np.radians(1e-3/3600*theta*(wavelength*1e2)**2))
+    return (wavelength*1e-3)*np.sqrt(np.log(4))/(np.pi*(1+magnification)*np.radians(1e-3/3600*theta*(wavelength*1e2)**2))
 
 def ensembleSmooth(img,dx,brane,return_kernel=False):
     '''

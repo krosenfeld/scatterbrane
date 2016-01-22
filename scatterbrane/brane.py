@@ -377,8 +377,8 @@ class Brane(object):
     dphi_x,dphi_y = self._calculate_dphi(move_pix=move_pix)
 
     if scale != 1:
-        dphi_x *= scale/sqrt(2.)
-        dphi_y *= scale/sqrt(2.)
+        dphi_x *= scale
+        dphi_y *= scale
 
     xx_,yy = np.meshgrid((np.arange(N) - 0.5*(N-1)),\
                          (np.arange(N) - 0.5*(N-1)),indexing='xy')
