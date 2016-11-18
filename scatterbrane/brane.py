@@ -107,7 +107,7 @@ class Brane(object):
     self.pa = pa                               # orientation of major axis, E of N (or CCW of +y)
 
     # Fresnel scale in km
-    self.rf = sqrt(self.dpc*pc.to(units.km).value / (2*pi / self.wavelength) * self.m / (1+self.m)**2)
+    self.rf = sqrt((self.d*self.rpc/(self.d+self.rpc))*pc.to(units.km).value / (2*pi / self.wavelength))
 
     # compute pixel scale for image
     if match_screen_res:
@@ -327,7 +327,7 @@ class Brane(object):
     :param filename: string 
       File containing the screen phases.
     '''
-    self.phi =  np.fromfile(filename,dtype=np.float64).reshape(self.nphi)
+    self.phi =  np.load(filename).reshape(self.nphi)
   
   def _calculate_dphi(self,move_pix=0):
     '''
