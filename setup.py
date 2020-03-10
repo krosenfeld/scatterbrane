@@ -5,7 +5,7 @@ if __name__ == "__main__":
     import scatterbrane
     setup(
         name="scatterbrane",
-        version = "0.0.1",
+        version = "0.1.0",
         packages = ["scatterbrane"],
         author = "Katherine Rosenfeld",
         author_email = "krosenf@gmail.com",

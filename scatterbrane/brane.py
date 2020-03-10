@@ -27,7 +27,7 @@ from numpy.fft import fft2,fftfreq
 from astropy.constants import au,pc
 from astropy import units
 import logging
-import utilities
+from scatterbrane import utilities
 
 __all__ = ["Brane"]
 
