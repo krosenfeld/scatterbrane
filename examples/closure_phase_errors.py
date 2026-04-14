@@ -1,7 +1,7 @@
 from scatterbrane import Brane,Target,utilities
 import numpy as np
 import time
-from imageio import imread
+from imageio.v2 import imread
 import matplotlib.pyplot as plt
 plt.rcParams['image.cmap'] = 'gray_r'
 plt.rcParams['image.origin'] = 'lower'
@@ -60,6 +60,8 @@ num_sim = int(10*60. / (time.time()-tic))
 logger.info('running {0:g} simulations'.format(num_sim))
 tic = time.time()
 for i in range(1,num_sim):
+    if i % 10 == 0:
+        logger.info('running simulation {0:g}'.format(i))
     one_sim(i)
 CP = np.asarray(CP)
 logger.info('took {0:g}s'.format(time.time()-tic))
