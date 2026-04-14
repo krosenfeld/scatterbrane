@@ -10,6 +10,15 @@ For installation instructions and help getting started please see `the documenta
 Installation
 ------------
 
+Install the package and its runtime dependencies with:
+
+.. code-block:: bash
+
+   pip install scatterbrane
+
+Local Installation
+-------------------
+
 This project now uses ``pyproject.toml`` and `uv <https://docs.astral.sh/uv/>`_ for dependency management.
 
 Install the package and its runtime dependencies with:
