@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scatterbrane"
+dynamic = ["version"]
+description = "A python module to simulate the effect of anisotropic scattering on astrophysical images."
+readme = "README.rst"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Katherine Rosenfeld", email = "krosenf@gmail.com" },
+]
+keywords = ["scattering", "astronomy", "EHT"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = [
+  "astropy",
+  "imageio",
+  "matplotlib",
+  "numpy",
+  "scipy",
+]
+
+[project.urls]
+Documentation = "http://krosenfeld.github.io/scatterbrane/"
+
+[dependency-groups]
+dev = [
+  "bump-my-version",
+  "build",
+]
+docs = [
+  "sphinx",
+  "sphinx-rtd-theme",
+]
+
+[tool.setuptools]
+packages = ["scatterbrane"]
+
+[tool.setuptools.dynamic]
+version = { attr = "scatterbrane.__version__" }
+
+[tool.bumpversion]
+current_version = "0.1.0"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+allow_dirty = false
+commit = true
+tag = true
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Release {new_version}"
+message = "Bump version: {current_version} -> {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+
+[[tool.bumpversion.files]]
+filename = "scatterbrane/__init__.py"
