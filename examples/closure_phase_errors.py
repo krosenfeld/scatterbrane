@@ -1,7 +1,7 @@
 from scatterbrane import Brane,Target,utilities
 import numpy as np
 import time
-from imageio import imread
+from imageio.v2 import imread
 import matplotlib.pyplot as plt
 plt.rcParams['image.cmap'] = 'gray_r'
 plt.rcParams['image.origin'] = 'lower'
